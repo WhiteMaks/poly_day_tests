@@ -9,9 +9,13 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>web-editor-steps</module>
-		<module>web-editor-tests</module>
 		<module>authenticate-db-steps</module>
+		<module>developer-service-db-steps</module>
+
+		<module>web-editor-steps</module>
+
+		<module>web-editor-tests</module>
+		<module>base-db-steps</module>
 	</modules>
 
 	<properties>

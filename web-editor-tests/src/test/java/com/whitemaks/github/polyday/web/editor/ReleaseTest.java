@@ -21,13 +21,15 @@ public class ReleaseTest {
 		var release = Release.random();
 
 		var editorPageSteps = editorSteps.getEditorPageSteps();
+		var developerServiceDbSteps = editorSteps.getDeveloperServiceDatabaseSteps();
 
 		editorPageSteps.createRelease(release);
+		developerServiceDbSteps.releaseByNameMustBe(release.getName());
 	}
 
 	@AfterAll
 	public static void cleanup() {
+		editorSteps.cleanupBrowser();
 		editorSteps.cleanupReleases();
-		editorSteps.cleanup();
 	}
 }
