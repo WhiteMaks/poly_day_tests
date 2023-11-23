@@ -6,7 +6,10 @@ public interface EditorConst {
 	String CLASS_RELEASE_TAB_WRAPPER = "release_tab_wrapper";
 	String CLASS_ACTION_BASE_BUTTON = "action_base_button";
 	String CLASS_ACTION_INPUT = "action_input_wrapper";
+	String CLASS_ACTION_CONTEXT_MENU = "action_context_menu";
 
 	String NAME_CREATE = "Create";
 	String NAME_CANCEL = "Cancel";
+	String NAME_DELETE = "Delete";
+	String NAME_RENAME = "Rename";
 }

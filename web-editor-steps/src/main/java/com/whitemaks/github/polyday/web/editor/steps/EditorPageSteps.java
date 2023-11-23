@@ -14,12 +14,48 @@ public class EditorPageSteps {
 		editorPage = new EditorPage(webDriver);
 	}
 
+	@Step("Удаление релиза с названием [ {release.name} ]")
+	public void deleteRelease(Release release) {
+		var topPane = editorPage.getTopPane();
+
+		var contextMenu = topPane.contextMenuOnReleaseTab(release.getName());
+
+		Assertions.assertTrue(contextMenu.isDisplayed(), "Контекст меню должно быть видно после нажатия по релизу");
+
+		var deleteButton = contextMenu.getDeleteButton();
+		var renameButton = contextMenu.getRenameButton();
+		var releaseTabsBeforeDelete = topPane.getReleaseTabs();
+
+		Allure.step("Проверка элементов контекст меню", () -> {
+			Assertions.assertAll(() -> {
+				Assertions.assertTrue(deleteButton.isFound(), "Кнопка удалния в контекст меню должна быть найдена");
+				Assertions.assertTrue(deleteButton.isDisplayed(), "Кнопка удалния в контекст меню должна быть видна");
+
+				Assertions.assertTrue(renameButton.isFound(), "Кнопка переименования в контекст меню должна быть найдена");
+				Assertions.assertTrue(renameButton.isDisplayed(), "Кнопка переименования в контекст меню должна быть видна");
+			});
+		});
+
+		Allure.step("Удаление релиза", () -> {
+			Assertions.assertTrue(deleteButton.click(), "Нажатие по кнопке удаления в контекст меню должно быть успешным");
+			Assertions.assertFalse(contextMenu.isDisplayed(), "Контекст меню должно быть скрыто после нажатия по кнопке удаления");
+		});
+
+		Allure.step("Проверка на отсутствие только что удаленного релиза в вехней панели", () -> {
+			var releaseTabsAfterDelete = topPane.getReleaseTabs();
+			Assertions.assertTrue(releaseTabsAfterDelete.size() <= releaseTabsBeforeDelete.size() - 1, "После закрытия контекс меню должно быть меньше релизов чем было до удаления");
+
+			var deletedReleaseTabOptional = topPane.getReleaseTabByName(release.getName());
+			Assertions.assertFalse(deletedReleaseTabOptional.isPresent(), "Только что удаленный релиз должен был пропасть среди релизов");
+		});
+	}
+
 	@Step("Создание релиза с названием [ {release.name} ]")
 	public void createRelease(Release release) {
 		var topPane = editorPage.getTopPane();
 		var modalCreateRelease = topPane.clickOnCreateReleaseButton();
 
-		Assertions.assertTrue(modalCreateRelease.isDisplayed(), "Модальное окна должно быть видно после нажатия по кнопке создания релиза");
+		Assertions.assertTrue(modalCreateRelease.isDisplayed(), "Модальное окно должно быть видно после нажатия по кнопке создания релиза");
 
 		var createButtonInModal = modalCreateRelease.getCreateButton();
 		var cancelButtonInModal = modalCreateRelease.getCancelButton();
@@ -55,10 +91,13 @@ public class EditorPageSteps {
 			var releaseTabsAfterCreate = topPane.getReleaseTabs();
 			Assertions.assertTrue(releaseTabsAfterCreate.size() >= releaseTabsBeforeCreate.size() + 1, "После закрытия модального окна должно быть больше релизов чем было до создания нового");
 
-			var newReleaseTabOptional = releaseTabsAfterCreate.stream()
-					.filter(releaseTab -> releaseTab.getText().equals(release.getName()))
-					.findFirst();
+			var newReleaseTabOptional = topPane.getReleaseTabByName(release.getName());
 			Assertions.assertTrue(newReleaseTabOptional.isPresent(), "Только что созданный релиз должен был появиться среди релизов");
 		});
+	}
+
+	@Step("Обновление страницы")
+	public void refreshPage() {
+		editorPage.refreshPage();
 	}
 }

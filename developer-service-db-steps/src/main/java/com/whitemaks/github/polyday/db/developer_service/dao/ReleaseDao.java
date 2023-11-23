@@ -5,6 +5,7 @@ import io.qameta.allure.Step;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.Date;
 import java.util.List;
 
 public class ReleaseDao {
@@ -55,6 +56,30 @@ public class ReleaseDao {
 			for (var release : releases) {
 				session.remove(release);
 			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Step("Добавление релиза с name [ {name} ] и userId [ {userId} ]")
+	public void add(String name, long userId) {
+		Transaction transaction = null;
+
+		try (var session = sessionFactory.openSession()) {
+			transaction = session.beginTransaction();
+
+			var release = new Release();
+			release.setName(name);
+			release.setUserId(userId);
+			release.setCreatedAt(new Date());
+			release.setUpdatedAt(new Date());
+
+			session.persist(release);
 
 			transaction.commit();
 		} catch (Exception e) {

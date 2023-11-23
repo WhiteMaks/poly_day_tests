@@ -8,6 +8,7 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TopPane extends BaseWebElement {
 
@@ -42,5 +43,29 @@ public class TopPane extends BaseWebElement {
 	@Step("Получение списка релизных элементов")
 	public List<WebElement> getReleaseTabs() {
 		return webElement.findElementsByClassName(EditorConst.CLASS_RELEASE_TAB_WRAPPER);
+	}
+
+	@Step("Получение релизного элемента по названию [ {name} ]")
+	public Optional<WebElement> getReleaseTabByName(String name) {
+		return getReleaseTabs().stream()
+				.filter(releaseTab -> releaseTab.getText().equals(name))
+				.findFirst();
+	}
+
+	@Step("Вызов контекс меню на релизном элементе с названием [ {name} ]")
+	public ContextMenu contextMenuOnReleaseTab(String name) {
+		var releaseTabOptional = getReleaseTabs().stream()
+				.filter(releaseTab -> releaseTab.getText().equals(name))
+				.findFirst();
+		Assertions.assertTrue(releaseTabOptional.isPresent(), "Релиз [ " + name + " ] должен должен быть среди релизов");
+
+		var releaseTab = releaseTabOptional.get();
+		Assertions.assertTrue(webDriver.contextMenu(releaseTab), "Вызов контекст меню дожен быть успешен");
+
+		var contextMenuWebElement = webDriver.getRootElement()
+				.findElementByClassName(EditorConst.CLASS_ACTION_CONTEXT_MENU);
+		Assertions.assertTrue(contextMenuWebElement.isFound(), "Элемент контекст меню должен быть найден");
+
+		return new ContextMenu(webDriver, contextMenuWebElement);
 	}
 }

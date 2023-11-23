@@ -29,8 +29,20 @@ public class DeveloperServiceDatabaseSteps extends BaseDatabaseSteps {
 		);
 	}
 
+	@Step("Создание релиза в базе данных с названием [ {name} ]")
+	public void createRelease(String name) {
+		releaseDao.add(name, 1);
+		releaseByNameShouldBe(name);
+	}
+
+	@Step("Проверка отсутствия релиза с названием [ {name} ] в базе данных")
+	public void releaseByNameShouldNotBe(String name) {
+		var dbRelease = releaseDao.findByName(name);
+		Assertions.assertNull(dbRelease, "Релиза с именем [ " + name + " ] в базе данных существует");
+	}
+
 	@Step("Проверка наличия релиза с названием [ {name} ] в базе данных")
-	public void releaseByNameMustBe(String name) {
+	public void releaseByNameShouldBe(String name) {
 		var dbRelease = releaseDao.findByName(name);
 		Assertions.assertNotNull(dbRelease, "Релиза с именем [ " + name + " ] в базе данных нет");
 		Assertions.assertNotNull(dbRelease.getId(), "Поле Id должно быть заполнен");

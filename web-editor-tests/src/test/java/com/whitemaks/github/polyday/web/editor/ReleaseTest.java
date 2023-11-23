@@ -24,7 +24,23 @@ public class ReleaseTest {
 		var developerServiceDbSteps = editorSteps.getDeveloperServiceDatabaseSteps();
 
 		editorPageSteps.createRelease(release);
-		developerServiceDbSteps.releaseByNameMustBe(release.getName());
+		developerServiceDbSteps.releaseByNameShouldBe(release.getName());
+	}
+
+	@Test
+	@DisplayName("Удаление существующего релиза")
+	@Description("Создание релиза в базе данных с рандомным названием, удаление созданного релиза в редакторе. Проверка его отсутствия на стринице, а так же в базе данных")
+	public void deleteRelease() {
+		var release = Release.random();
+
+		var editorPageSteps = editorSteps.getEditorPageSteps();
+		var developerServiceDbSteps = editorSteps.getDeveloperServiceDatabaseSteps();
+
+		developerServiceDbSteps.createRelease(release.getName());
+		editorPageSteps.refreshPage();
+
+		editorPageSteps.deleteRelease(release);
+		developerServiceDbSteps.releaseByNameShouldNotBe(release.getName());
 	}
 
 	@AfterAll
