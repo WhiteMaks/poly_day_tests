@@ -1,5 +1,9 @@
-package com.whitemaks.github.polyday.web.editor.pages.editor.elements;
+package com.whitemaks.github.polyday.web.editor.pages.editor.elements.top_pane;
 
+import com.whitemaks.github.polyday.web.editor.pages.editor.EditorPage;
+import com.whitemaks.github.polyday.web.editor.pages.editor.elements.ContextMenu;
+import com.whitemaks.github.polyday.web.editor.pages.editor.elements.EditorConst;
+import com.whitemaks.github.polyday.web.editor.pages.editor.elements.Modal;
 import com.whitemaks.github.web_driver.BaseWebElement;
 import com.whitemaks.github.web_driver.wrappers.WebDriver;
 import com.whitemaks.github.web_driver.wrappers.WebElement;
@@ -17,7 +21,7 @@ public class TopPane extends BaseWebElement {
 	}
 
 	@Step("Нажатие по кнопке создания релиза и получение объекта модального окна")
-	public ModalCreateRelease clickOnCreateReleaseButton() {
+	public Modal clickOnCreateReleaseButton() {
 		var button = getCreateReleaseButton();
 
 		Allure.step("Проверка кнопки для создание релиза на доступность, после чего клик по кнопке", () -> {
@@ -27,12 +31,7 @@ public class TopPane extends BaseWebElement {
 			Assertions.assertTrue(button.click(), "Клик по кнопке создания релиза должен быть успешным");
 		});
 
-		var modalElement = webDriver.getRootElement()
-				.findElementByClassName(EditorConst.CLASS_MODAL_WRAPPER);
-
-		Assertions.assertTrue(modalElement.isFound(), "После нажатия по кнопке создания релиза должно появиться модальное окно");
-
-		return new ModalCreateRelease(webDriver, modalElement);
+		return EditorPage.findModalOnPage(webDriver);
 	}
 
 	@Step("Получение элемента кнопки для создания релиза")
@@ -62,10 +61,6 @@ public class TopPane extends BaseWebElement {
 		var releaseTab = releaseTabOptional.get();
 		Assertions.assertTrue(webDriver.contextMenu(releaseTab), "Вызов контекст меню дожен быть успешен");
 
-		var contextMenuWebElement = webDriver.getRootElement()
-				.findElementByClassName(EditorConst.CLASS_ACTION_CONTEXT_MENU);
-		Assertions.assertTrue(contextMenuWebElement.isFound(), "Элемент контекст меню должен быть найден");
-
-		return new ContextMenu(webDriver, contextMenuWebElement);
+		return EditorPage.findContextMenuOnPage(webDriver);
 	}
 }

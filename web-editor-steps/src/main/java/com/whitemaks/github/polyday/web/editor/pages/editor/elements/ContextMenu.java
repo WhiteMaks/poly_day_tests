@@ -25,4 +25,9 @@ public class ContextMenu extends BaseWebElement {
 	public WebElement getRenameButton() {
 		return webElement.findElementByText(EditorConst.NAME_RENAME);
 	}
+
+	@Step("Получение элемента кнопки по названию [ {name} ]")
+	public WebElement getButtonByName(String name) {
+		return webElement.findElementByText(name);
+	}
 }

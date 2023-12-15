@@ -27,6 +27,10 @@ public class EditorSteps {
 		developerServiceDatabaseSteps.cleanupReleases();
 	}
 
+	public void cleanupEntities() {
+		developerServiceDatabaseSteps.cleanupEntities();
+	}
+
 	public void cleanupBrowser() {
 		WebDriverFactory.eliminateWebDriver();
 	}

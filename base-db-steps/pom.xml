@@ -12,10 +12,6 @@
 	<artifactId>base-db-steps</artifactId>
 
 	<properties>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<hibernate.version>6.3.0.Final</hibernate.version>
 		<postgresql-version>42.7.0</postgresql-version>
 	</properties>

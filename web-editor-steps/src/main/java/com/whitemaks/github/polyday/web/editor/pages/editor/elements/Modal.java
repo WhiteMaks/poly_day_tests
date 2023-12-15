@@ -5,24 +5,24 @@ import com.whitemaks.github.web_driver.wrappers.WebDriver;
 import com.whitemaks.github.web_driver.wrappers.WebElement;
 import io.qameta.allure.Step;
 
-public class ModalCreateRelease extends BaseWebElement {
+public class Modal extends BaseWebElement {
 
-	public ModalCreateRelease(WebDriver webDriver, WebElement webElement) {
+	public Modal(WebDriver webDriver, WebElement webElement) {
 		super(webDriver, webElement);
 	}
 
-	@Step("Получение элемента кнопки для подтверждения создания релиза")
+	@Step("Получение элемента кнопки для подтверждения создания")
 	public WebElement getCreateButton() {
 		return findButtonByName(EditorConst.NAME_CREATE);
 	}
 
-	@Step("Получение элемента кнопки для отмены создания релиза")
+	@Step("Получение элемента кнопки для отмены")
 	public WebElement getCancelButton() {
 		return findButtonByName(EditorConst.NAME_CANCEL);
 	}
 
-	@Step("Получение элемента инпута для ввода названия релиза")
-	public WebElement getReleaseNameInput() {
+	@Step("Получение элемента инпута для ввода названия")
+	public WebElement getNameInput() {
 		return webElement.findElementByClassName(EditorConst.CLASS_ACTION_INPUT);
 	}
 
