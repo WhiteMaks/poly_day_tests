@@ -4,6 +4,7 @@ import com.whitemaks.github.polyday.web.editor.pages.editor.EditorPage;
 import com.whitemaks.github.polyday.web.editor.pages.editor.elements.ContextMenu;
 import com.whitemaks.github.polyday.web.editor.pages.editor.elements.EditorConst;
 import com.whitemaks.github.polyday.web.editor.pages.editor.elements.Modal;
+import com.whitemaks.github.polyday.web.editor.utils.Common;
 import com.whitemaks.github.web_driver.BaseWebElement;
 import com.whitemaks.github.web_driver.wrappers.WebDriver;
 import com.whitemaks.github.web_driver.wrappers.WebElement;
@@ -34,6 +35,26 @@ public class TopPane extends BaseWebElement {
 		return EditorPage.findModalOnPage(webDriver);
 	}
 
+	@Step("Ожидание до тех пор пока не появится релиз с именем [ {name} ]")
+	public Optional<WebElement> waitWhileReleaseByNameWillBePresent(String name, int millis) {
+		Optional<WebElement> result = Optional.empty();
+
+		var currentMillis = 0;
+		var stepCheck = 100;
+
+		while (millis > currentMillis) {
+			Common.sleep(stepCheck);
+			currentMillis += stepCheck;
+
+			result = getReleaseTabByName(name);
+			if (result.isPresent()) {
+				return result;
+			}
+		}
+
+		return result;
+	}
+
 	@Step("Получение элемента кнопки для создания релиза")
 	public WebElement getCreateReleaseButton() {
 		return findButtonByClassName(EditorConst.CLASS_ACTION_BASE_BUTTON);
@@ -41,7 +62,7 @@ public class TopPane extends BaseWebElement {
 
 	@Step("Получение списка релизных элементов")
 	public List<WebElement> getReleaseTabs() {
-		return webElement.findElementsByClassName(EditorConst.CLASS_RELEASE_TAB_WRAPPER);
+		return webElement.findElementsByClassName(EditorConst.CLASS_TAB_WRAPPER);
 	}
 
 	@Step("Получение релизного элемента по названию [ {name} ]")

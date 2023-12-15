@@ -60,7 +60,6 @@ public class EditorPageSteps {
 
 		var createButtonInModal = modalCreateRelease.getCreateButton();
 		var releaseNameInput = modalCreateRelease.getNameInput();
-		var releaseTabsBeforeCreate = topPane.getReleaseTabs();
 
 		Allure.step("Заполнение данных в инпут с название релиза", () -> {
 			Assertions.assertTrue(releaseNameInput.sendKeys(release.getName()), "Ввод в поле для имени релиза в модальном окне дожно быть успешным");
@@ -75,10 +74,7 @@ public class EditorPageSteps {
 		});
 
 		Allure.step("Проверка на наличие только что созданного релиза в вехней панели", () -> {
-			var releaseTabsAfterCreate = topPane.getReleaseTabs();
-			Assertions.assertTrue(releaseTabsAfterCreate.size() >= releaseTabsBeforeCreate.size() + 1, "После закрытия модального окна должно быть больше релизов чем было до создания нового");
-
-			var newReleaseTabOptional = topPane.getReleaseTabByName(release.getName());
+			var newReleaseTabOptional = topPane.waitWhileReleaseByNameWillBePresent(release.getName(), 1000);
 			Assertions.assertTrue(newReleaseTabOptional.isPresent(), "Только что созданный релиз должен был появиться среди релизов");
 		});
 	}

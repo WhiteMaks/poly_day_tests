@@ -2,7 +2,7 @@ package com.whitemaks.github.polyday.web.editor.pages.editor.elements;
 
 public interface EditorConst {
 	String CLASS_TOP_PANE_WRAPPER = "top_pane_wrapper";
-	String CLASS_RELEASE_TAB_WRAPPER = "release_tab_wrapper";
+	String CLASS_TAB_WRAPPER = "wrappers_tab";
 
 	String CLASS_BOTTOM_PANE_WRAPPER = "bottom_pane_wrapper";
 	String CLASS_BOTTOM_PANE_EXPLORER = "bottom_pane_explorer";

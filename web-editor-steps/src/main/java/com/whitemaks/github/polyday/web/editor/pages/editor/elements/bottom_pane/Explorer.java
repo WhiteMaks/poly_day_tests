@@ -25,7 +25,7 @@ public class Explorer extends BaseWebElement {
 		return EditorPage.findContextMenuOnPage(webDriver);
 	}
 
-	@Step
+	@Step("Ожидание до тех пор пока не появится сущность с именем [ {name} ]")
 	public Optional<WebElement> waitWhileEntityByNameWillBePresent(String name, int millis) {
 		Optional<WebElement> result = Optional.empty();
 
